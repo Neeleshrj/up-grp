@@ -35,15 +35,15 @@ const useStyles = makeStyles({
   },
 });
 
-function handleInput(input, platform, state, updateState) {
-  let newState = { ...state, [platform]: input };
+function handleInput(input, platform, shift, state, updateState) {
+  let newState = { ...state, [platform]: { no_of_men: input, shift } };
   console.log(newState);
   updateState(newState);
 }
 
-function sendDutyRequired(data, setStatus) {
+function sendDutyRequired(uri, station, data, setStatus) {
   if (data) {
-    fetch(`https://uppolice-app.herokuapp.com/jobs/requirement/PlatformDuty`, {
+    fetch(uri + `/jobs/requirement/PlatformDuty?station=` + station, {
       method: "POST",
       body: JSON.stringify(data),
       headers: { "Content-Type": "application/json" },
@@ -92,10 +92,11 @@ export default function CustomizedTables(props) {
   const classes = useStyles();
   const [status, updateStatus] = useState("");
   const [platforms, updatePlaforms] = useState([]);
+
   const [input, updateInput] = useState({});
   const [loading, updateLoading] = useState(false);
   useEffect(() => {
-    fetch(`https://uppolice-app.herokuapp.com/jobs/PlatformDuty`)
+    fetch(props.uri + `/jobs/PlatformDuty?station=` + props.station)
       .then((res) => res.json())
       .then((data) => {
         if (data.status == "success") {
@@ -120,8 +121,9 @@ export default function CustomizedTables(props) {
                   <StyledTableCell align="left">
                     ड्यूटी का स्थान
                   </StyledTableCell>
+                  <StyledTableCell align="center">shift</StyledTableCell>
                   <StyledTableCell align="center">
-                    लोगों की संख्या
+                    लोगों की संख्या रात
                   </StyledTableCell>
                 </TableRow>
               </TableHead>
@@ -136,20 +138,24 @@ export default function CustomizedTables(props) {
                           प्लेटफार्म नंबर: {x.platform_no}
                         </StyledTableCell>
                         <StyledTableCell align="center">
+                          {x.shift}
+                        </StyledTableCell>
+                        <StyledTableCell align="center">
                           <TextField
                             size="small"
                             id="filled-number"
                             type="number"
                             variant="outlined"
                             value={
-                              input.hasOwnProperty(x.platform_no)
-                                ? input[x.platform_no]
+                              input.hasOwnProperty(x._id)
+                                ? input[x._id].no_of_men
                                 : x.no_of_men
                             }
                             onChange={(e) =>
                               handleInput(
                                 e.target.value,
-                                x.platform_no,
+                                x._id,
+                                x.shift,
                                 input,
                                 updateInput
                               )
@@ -168,7 +174,9 @@ export default function CustomizedTables(props) {
               size="large"
               variant="contained"
               style={{ marginTop: "20px" }}
-              onClick={() => sendDutyRequired(input, updateStatus)}
+              onClick={() =>
+                sendDutyRequired(props.uri, props.station, input, updateStatus)
+              }
             >
               आगे बढ़ें
             </Button>

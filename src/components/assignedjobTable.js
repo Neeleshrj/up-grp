@@ -27,7 +27,7 @@ function TrainTable() {
   const classes = useStyles();
   const [trains, updateTrains] = useState([]);
   useEffect(() => {
-    fetch(`https://uppolice-app.herokuapp.com/jobs/assigned/TrainDuty`)
+    fetch(`http://localhost:8000/jobs/assigned/TrainDuty`)
       .then((res) => res.json())
       .then((data) => {
         if (data.status == "success") {
@@ -80,18 +80,53 @@ function TrainTable() {
 function PlatformTable() {
   const classes = useStyles();
 
-  const [platforms, updatePlatforms] = useState([]);
+  const [platformsDay, updatePlatformsDay] = useState([]);
+  const [platformsNight, updatePlatformsNight] = useState([]);
   useEffect(() => {
-    fetch(`https://uppolice-app.herokuapp.com/jobs/assigned/PlatformDuty`)
+    fetch(`http://localhost:8000/jobs/assigned/PlatformDuty`)
       .then((res) => res.json())
       .then((data) => {
         if (data.status == "success") {
-          updatePlatforms(data.data.platforms);
+          updatePlatformsDay(data.data.platforms.day);
+          updatePlatformsNight(data.data.platforms.night);
         }
       });
   }, []);
   return (
     <div>
+      <div id="table-first">
+        <h5 align="left">Day प्लेटफॉर्म ड्यूटी जी.आर.पी. प्रयागराज</h5>
+        <table border={1} className={classes.table}>
+          <thead className={classes.th}>
+            <tr>
+              <th>ड्यूटी का स्थान</th>
+              <th>शस्त्र/उपकरण</th>
+              <th>हस्ताक्षर</th>
+              <th>नाम</th>
+              <th>मोबाइल नंबर</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {platformsDay.map((x, i) => (
+              <>
+                <tr className={classes.td}>
+                  <td rowspan={x.user.length + 1}>{x.job.platform_no}</td>
+                  <td rowspan={x.user.length + 1}>हैंडसेट</td>
+                  <td rowspan={x.user.length + 1}>हस्ताक्षर</td>
+                </tr>
+                {x.user.map((y, j) => (
+                  <tr className={classes.td}>
+                    <td>{y.name}</td>
+                    <td>{y.contact}</td>
+                  </tr>
+                ))}
+              </>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
       <div id="table-first">
         <h5 align="left">नाइट प्लेटफॉर्म ड्यूटी जी.आर.पी. प्रयागराज</h5>
         <table border={1} className={classes.table}>
@@ -106,7 +141,7 @@ function PlatformTable() {
           </thead>
 
           <tbody>
-            {platforms.map((x, i) => (
+            {platformsNight.map((x, i) => (
               <>
                 <tr className={classes.td}>
                   <td rowspan={x.user.length + 1}>{x.job.platform_no}</td>
@@ -132,20 +167,23 @@ function AreaTable() {
   const classes = useStyles();
 
   const [areas, updateAreas] = useState([]);
+  const [areasDay, updateAreasDay] = useState([]);
+  const [areasNight, updateAreasNight] = useState([]);
   useEffect(() => {
-    fetch(`https://uppolice-app.herokuapp.com/jobs/assigned/AreaDuty`)
+    fetch(`http://localhost:8000/jobs/assigned/AreaDuty`)
       .then((res) => res.json())
       .then((data) => {
         if (data.status == "success") {
           console.log(data.data);
-          updateAreas(data.data.areas);
+          updateAreasDay(data.data.areas.day);
+          updateAreasNight(data.data.areas.night);
         }
       });
   }, []);
   return (
     <div>
       <div id="table-first">
-        <h5 align="left">क्षेत्र चार्ट थाना जी.आर.पी. प्रयागराज</h5>
+        <h5 align="left"> Day क्षेत्र चार्ट थाना जी.आर.पी. प्रयागराज</h5>
         <table border={1} className={classes.table}>
           <thead className={classes.th}>
             <tr>
@@ -158,7 +196,40 @@ function AreaTable() {
           </thead>
 
           <tbody>
-            {areas.map((x, i) => (
+            {areasDay.map((x, i) => (
+              <>
+                <tr className={classes.td}>
+                  <td rowspan={x.user.length + 1}>{x.job.location}</td>
+                  <td rowspan={x.user.length + 1}>हैंडसेट</td>
+                  <td rowspan={x.user.length + 1}>हस्ताक्षर</td>
+                </tr>
+                {x.user.map((y, j) => (
+                  <tr className={classes.td}>
+                    <td>{y.name}</td>
+                    <td>{y.contact}</td>
+                  </tr>
+                ))}
+              </>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <div id="table-first">
+        <h5 align="left">Night क्षेत्र चार्ट थाना जी.आर.पी. प्रयागराज</h5>
+        <table border={1} className={classes.table}>
+          <thead className={classes.th}>
+            <tr>
+              <th>ड्यूटी का स्थान</th>
+              <th>शस्त्र/उपकरण</th>
+              <th>हस्ताक्षर</th>
+              <th>नाम</th>
+              <th>मोबाइल नंबर</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {areasNight.map((x, i) => (
               <>
                 <tr className={classes.td}>
                   <td rowspan={x.user.length + 1}>{x.job.location}</td>
@@ -203,11 +274,11 @@ function download(filename, text) {
   document.body.removeChild(link);
 }
 function handleClick(updateStatus) {
-  fetch(`https://uppolice-app.herokuapp.com/jobs/generate/pdf`)
+  fetch(`http://localhost:8000/jobs/generate/pdf`)
     .then((res) => res.arrayBuffer())
     .then((doc) => {
-      download(`7Day_${(new Date()).toLocaleDateString()}.pdf`, doc);
-      updateStatus("")
+      download(`7Day_${new Date().toLocaleDateString()}.pdf`, doc);
+      updateStatus("");
       // if (doc.status == "success") {
       //   window.open(`https://uppolice-app.herokuapp.com/uploads/${doc.data}.pdf`, "_blank");
       //   updateStatus("");

@@ -24,8 +24,8 @@ function download(filename, text) {
   link.click();
   document.body.removeChild(link);
 }
-function handleClick(updateStatus) {
-  fetch(`https://uppolice-app.herokuapp.com/jobs/generate/finalPdf`)
+function handleClick(updateStatus,uri,station) {
+  fetch(uri+`/jobs/generate/finalPdf?station=`+station)
     .then((res) => res.arrayBuffer())
     .then((doc) => {
       download(`Daily_${(new Date()).toLocaleDateString()}.pdf`, doc);
@@ -39,13 +39,14 @@ function Dashboard(props) {
   useEffect(() => {
     props.nav(false);
   }, []);
+ 
   const [status, updateStatus] = useState("");
   return (
     <>
       <div style={{ marginTop: "10%" }}>
         
         {status ? <span>{status}</span> : ""}
-        <button onClick={() => handleClick(updateStatus)}>Print Pdf</button>
+        <button onClick={() => handleClick(updateStatus,props.uri,props.station)}>Print Pdf</button>
       </div>
     </>
   );

@@ -243,7 +243,7 @@ export default function EnhancedTable(props) {
 
   const [trains, updateTrains] = useState([]);
   useEffect(() => {
-    fetch(`https://uppolice-app.herokuapp.com/jobs/TrainDuty`)
+    fetch(props.uri+`/jobs/TrainDuty?station=`+props.station)
       .then((res) => res.json())
       .then((data) => {
         if (data.status == "success") {
@@ -320,7 +320,7 @@ export default function EnhancedTable(props) {
 
   function sendDutyRequired(data, setStatus) {
     if (Object.keys(data).length) {
-      fetch(`https://uppolice-app.herokuapp.com/jobs/requirement/TrainDuty`, {
+      fetch(props.uri+`/jobs/requirement/TrainDuty?station=`+props.station, {
         method: "POST",
         body: JSON.stringify(data),
         headers: { "Content-Type": "application/json" },
@@ -362,7 +362,7 @@ export default function EnhancedTable(props) {
   }
 
   function handleAssignment(updateStatus) {
-    fetch(`https://uppolice-app.herokuapp.com/jobs/generate/assignment`)
+    fetch(props.uri+`/jobs/generate/assignment?station=`+props.station)
       .then((res) => res.json())
       .then((data) => {
         if (data.status == "success") updateStatus(true);

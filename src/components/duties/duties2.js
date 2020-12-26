@@ -35,15 +35,15 @@ const useStyles = makeStyles({
   },
 });
 
-function handleInput(input, area, state, updateState) {
-  let newState = { ...state, [area]: input };
+function handleInput(input, area, shift, state, updateState) {
+  let newState = { ...state, [area]: { no_of_men: input, shift } };
   console.log(newState);
   updateState(newState);
 }
 
-function sendDutyRequired(data, setStatus) {
+function sendDutyRequired(uri, station, data, setStatus) {
   if (Object.keys(data).length) {
-    fetch(`https://uppolice-app.herokuapp.com/jobs/requirement/AreaDuty`, {
+    fetch(uri + `/jobs/requirement/AreaDuty?station=` + station, {
       method: "POST",
       body: JSON.stringify(data),
       headers: { "Content-Type": "application/json" },
@@ -95,7 +95,7 @@ export default function CustomizedTables2(props) {
   const [input, updateInput] = useState({});
   const [loading, updateLoading] = useState(false);
   useEffect(() => {
-    fetch(`https://uppolice-app.herokuapp.com/jobs/AreaDuty`)
+    fetch(props.uri + `/jobs/AreaDuty?station=` + props.station)
       .then((res) => res.json())
       .then((data) => {
         if (data.status == "success") {
@@ -109,84 +109,97 @@ export default function CustomizedTables2(props) {
 
   return (
     <>
-    {loading?setLoadingInterval(updateLoading,areas):
-      (
-      <>
-      <TableContainer component={Paper} style={{ marginTop: "15vh" }}>
-        <Table className={classes.table} aria-label="customized table">
-          <TableHead>
-            <TableRow>
-              <StyledTableCell>क्र.सं.</StyledTableCell>
-              <StyledTableCell align="left">ड्यूटी का स्थान</StyledTableCell>
-              <StyledTableCell align="center">लोगों की संख्या</StyledTableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {areas.length
-              ? areas.map((x, i) => (
-                  <StyledTableRow>
-                    <StyledTableCell component="th" scope="row">
-                      {i + 1}
-                    </StyledTableCell>
-                    <StyledTableCell align="left">{x.location}</StyledTableCell>
-                    <StyledTableCell align="center">
-                      <TextField
-                        size="small"
-                        id="filled-number"
-                        type="number"
-                        value={
-                          input.hasOwnProperty(x.location)
-                            ? input[x.location]
-                            : x.no_of_men
-                        }
-                        variant="outlined"
-                        onChange={(e) =>
-                          handleInput(
-                            e.target.value,
-                            x.location,
-                            input,
-                            updateInput
-                          )
-                        }
-                      />
-                    </StyledTableCell>
-                  </StyledTableRow>
-                ))
-              : ""}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      <div>
-        <Button
-          color="primary"
-          size="large"
-          variant="contained"
-          style={{ marginTop: "20px" }}
-          onClick={() => sendDutyRequired(input, updateStatus)}
-        >
-          आगे बढ़ें
-        </Button>
-        {status.length ? (
-          <Typography
-            variant="h6"
-            displayInline
-            style={{
-              padding: "8px",
-              backgroundColor: "#43A047",
-              width: "120px",
-              color: "white",
-              borderRadius: "3px",
-            }}
-          >
-            {setStatusInterval(status, updateStatus)}
-          </Typography>
-        ) : (
-          ""
-        )}
-      </div>
-      </>
-      )
-      }
+      {loading ? (
+        setLoadingInterval(updateLoading, areas)
+      ) : (
+        <>
+          <TableContainer component={Paper} style={{ marginTop: "15vh" }}>
+            <Table className={classes.table} aria-label="customized table">
+              <TableHead>
+                <TableRow>
+                  <StyledTableCell>क्र.सं.</StyledTableCell>
+                  <StyledTableCell align="left">
+                    ड्यूटी का स्थान
+                  </StyledTableCell>
+                  <StyledTableCell align="center">shift</StyledTableCell>
+                  <StyledTableCell align="center">
+                    लोगों की संख्या रात
+                  </StyledTableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {areas.length
+                  ? areas.map((x, i) => (
+                      <StyledTableRow>
+                        <StyledTableCell component="th" scope="row">
+                          {i + 1}
+                        </StyledTableCell>
+                        <StyledTableCell align="left">
+                          {x.location}
+                        </StyledTableCell>
+                        <StyledTableCell align="center">
+                          {x.shift}
+                        </StyledTableCell>
+                        <StyledTableCell align="center">
+                          <TextField
+                            size="small"
+                            id="filled-number"
+                            type="number"
+                            value={
+                              input.hasOwnProperty(x._id)
+                                ? input[x._id].no_of_men
+                                : x.no_of_men
+                            }
+                            variant="outlined"
+                            onChange={(e) =>
+                              handleInput(
+                                e.target.value,
+                                x._id,
+                                x.shift,
+                                input,
+                                updateInput
+                              )
+                            }
+                          />
+                        </StyledTableCell>
+                      </StyledTableRow>
+                    ))
+                  : ""}
+              </TableBody>
+            </Table>
+          </TableContainer>
+          <div>
+            <Button
+              color="primary"
+              size="large"
+              variant="contained"
+              style={{ marginTop: "20px" }}
+              onClick={() =>
+                sendDutyRequired(props.uri, props.station, input, updateStatus)
+              }
+            >
+              आगे बढ़ें
+            </Button>
+            {status.length ? (
+              <Typography
+                variant="h6"
+                displayInline
+                style={{
+                  padding: "8px",
+                  backgroundColor: "#43A047",
+                  width: "120px",
+                  color: "white",
+                  borderRadius: "3px",
+                }}
+              >
+                {setStatusInterval(status, updateStatus)}
+              </Typography>
+            ) : (
+              ""
+            )}
+          </div>
+        </>
+      )}
     </>
   );
 }

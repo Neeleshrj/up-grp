@@ -57,6 +57,7 @@
     "@electron-forge/maker-deb": "^6.0.0-beta.54",
     "@electron-forge/maker-rpm": "^6.0.0-beta.54",
     "@electron-forge/maker-squirrel": "^6.0.0-beta.54",
+    "@electron-forge/maker-wix": "^6.0.0-beta.54",
     "@electron-forge/maker-zip": "^6.0.0-beta.54",
     "concurrently": "^5.3.0",
     "electron": "^11.1.0",
@@ -64,14 +65,10 @@
   },
   "config": {
     "forge": {
-      "packagerConfig": {},
+      "packagerConfig": {
+        "icon": "./src/img/icons/win/icon.ico"
+      },
       "makers": [
-        {
-          "name": "@electron-forge/maker-squirrel",
-          "config": {
-            "name": "police"
-          }
-        },
         {
           "name": "@electron-forge/maker-zip",
           "platforms": [
@@ -85,6 +82,14 @@
         {
           "name": "@electron-forge/maker-rpm",
           "config": {}
+        },
+        {
+          "name": "@electron-forge/maker-wix",
+          "config": {
+            "ui": {
+              "chooseDirectory": true
+            }
+          }
         }
       ]
     }

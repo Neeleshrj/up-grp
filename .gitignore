@@ -21,8 +21,3 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-
-#executable
-/out/
-/out/police-win32-x64.rar
-/out/police-win32-x64/police.exe

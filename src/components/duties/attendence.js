@@ -30,8 +30,8 @@ const columns = [
 //   columns[i].headerName.style.fontWeight = "900";
 // }
 
-async function getData(updateRows,updateLoading) {
-  fetch(`  https://uppolice-app.herokuapp.com/users/`)
+async function getData(uri,station,updateRows, updateLoading) {
+  fetch(uri+`/users?station=`+station)
     .then((res) => res.json())
     .then((doc) => {
       //console.log(doc);
@@ -47,12 +47,12 @@ async function getData(updateRows,updateLoading) {
         }))
       );
     });
-   return updateLoading(true)
+  return updateLoading(true);
 }
 
-async function updateAttendance(data, updateStatus) {
+async function updateAttendance(uri,station,data, updateStatus) {
   //console.log(data);
-  fetch(`  https://uppolice-app.herokuapp.com/users/attendance`, {
+  fetch(uri+`/users/attendance?station=`+station, {
     method: "POST",
     body: JSON.stringify(data),
     headers: { "Content-Type": "application/json" },
@@ -64,25 +64,25 @@ async function updateAttendance(data, updateStatus) {
 }
 
 function loadingInterval(rows) {
-    return new Promise((resolve, reject) => {
-      const interval = setInterval(() => {
-        if (rows.length) {
-          resolve({ status: "true", interval });
-        } else resolve({ status: "false", interval });
-      }, 2000);
-    });
-  }
+  return new Promise((resolve, reject) => {
+    const interval = setInterval(() => {
+      if (rows.length) {
+        resolve({ status: "true", interval });
+      } else resolve({ status: "false", interval });
+    }, 2000);
+  });
+}
 
-  function setLoadingInterval(updateLoading,rows) {
-    loadingInterval(rows).then(({ status, interval }) => {
-      if (status) {
-        clearInterval(interval);
-        return updateLoading(false);
-      } else return;
-    });
+function setLoadingInterval(updateLoading, rows) {
+  loadingInterval(rows).then(({ status, interval }) => {
+    if (status) {
+      clearInterval(interval);
+      return updateLoading(false);
+    } else return;
+  });
 
-    return <Loading />;
-  }
+  return <Loading />;
+}
 
 function setStatusInterval(msg, updateStatus) {
   if (msg == "error") {
@@ -108,63 +108,69 @@ export default function Attendence(props) {
       availability: "",
     },
   ]);
-  const [loading,updateLoading] = useState(false)
+  const [loading, updateLoading] = useState(false);
   const [selected, updateSelected] = useState([]);
   useEffect(() => {
-    getData(updateRows,updateLoading);
-    props.nav(false)
-    props.prev("/dashboard")
+    console.log(props.uri)
+    console.log(props.station)
+    getData(props.uri,props.station,updateRows, updateLoading);
+    props.nav(false);
+    props.prev("/dashboard");
+    
   }, []);
 
   return (
     <>
-      {loading?setLoadingInterval(updateLoading,rows):(
-      <>
-      <div style={{ height: "80%", width: "100%", marginTop: "6%" }}>
-        <DataGrid
-          rows={rows}
-          columns={columns}
-          pageSize={10}
-          checkboxSelection
-          checked="true"
-          onSelectionChange={(x) => updateSelected(x.rowIds)}
-          autoPageSize="True"
-        />
-      </div>
-      <div style={{ marginRight: "100px" }}>
-        <Button
-          color="primary"
-          size="large"
-          variant="contained"
-          style={{ marginTop: "20px" }}
-          onClick={() =>
-            updateAttendance(
-              selected.map((x) => rows[x - 1]["pno"]),
-              updateStatus
-            )
-          }
-        >
-          आगे बढ़ें
-        </Button>
-        {status.length ? (
-          <Typography
-            variant="h6"
-            displayInline
-            style={{
-              padding: "8px",
-              backgroundColor: "#43A047",
-              width: "120px",
-              color: "white",
-              borderRadius: "3px",
-            }}
-          >
-            {setStatusInterval(status, updateStatus)}
-          </Typography>
-        ) : (
-          ""
-        )}
-      </div>
-      </>
+      {loading ? (
+        setLoadingInterval(updateLoading, rows)
+      ) : (
+        <>
+          <div style={{ height: "80%", width: "100%", marginTop: "6%" }}>
+            <DataGrid
+              rows={rows}
+              columns={columns}
+              pageSize={10}
+              checkboxSelection
+              checked="true"
+              onSelectionChange={(x) => updateSelected(x.rowIds)}
+              autoPageSize="True"
+            />
+          </div>
+          <div style={{ marginRight: "100px" }}>
+            <Button
+              color="primary"
+              size="large"
+              variant="contained"
+              style={{ marginTop: "20px" }}
+              onClick={() =>
+                updateAttendance(
+                  props.uri,props.station,
+                  selected.map((x) => rows[x - 1]["pno"]),
+                  updateStatus
+                )
+              }
+            >
+              आगे बढ़ें
+            </Button>
+            {status.length ? (
+              <Typography
+                variant="h6"
+                displayInline
+                style={{
+                  padding: "8px",
+                  backgroundColor: "#43A047",
+                  width: "120px",
+                  color: "white",
+                  borderRadius: "3px",
+                }}
+              >
+                {setStatusInterval(status, updateStatus)}
+              </Typography>
+            ) : (
+              ""
+            )}
+          </div>
+        </>
       )}
     </>
   );

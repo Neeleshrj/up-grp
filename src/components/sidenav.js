@@ -17,13 +17,11 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link,
   Redirect,
 } from "react-router-dom";
 import AddEmp from "./sidenavFiles/addemp";
 import AddTrain from "./sidenavFiles/addtrain";
 import Attendence from "./duties/attendence";
-import Attendencere from "./duties/attendancere";
 import Duties from "./duties/duties";
 import Duties2 from "./duties/duties2";
 import Duties3 from "./duties/duties3";
@@ -33,6 +31,8 @@ import AddAreaDuty from "./sidenavFiles/addAreaDuty";
 import AssignedJobs from "./assignedjobTable";
 import DashboardPage from "./sidenavFiles/dashboard";
 import ArrowBack from "@material-ui/icons/ArrowBack";
+import { Station } from "../contextStation";
+import UpdateList from "./sidenavFiles/updateList";
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
@@ -120,9 +120,10 @@ export default function Dashboard(props) {
   const [redirect, updateRedirect] = useState(false);
   const classes = useStyles();
   const [open, setOpen] = React.useState(true);
-
+  const { station } = props;
+  const uri = "https://uppolice-app.herokuapp.com";
   const navigate = () => {
-    return <Redirect to={prevPage} />
+    return <Redirect to={prevPage} />;
   };
 
   const handleDrawerOpen = () => {
@@ -195,34 +196,76 @@ export default function Dashboard(props) {
       <main className={classes.content}>
         <Switch>
           <Route path="/dashboard">
-            <DashboardPage nav={updateRedirect}/>
+            <DashboardPage nav={updateRedirect} station={station} uri={uri} />
           </Route>
           <Route path="/addemp">
-            <AddEmp nav={updateRedirect}/>
+            <AddEmp nav={updateRedirect} station={station} uri={uri} />
           </Route>
           <Route path="/addtrain">
-            <AddTrain nav={updateRedirect}/>
+            <AddTrain nav={updateRedirect} station={station} uri={uri} />
           </Route>
           <Route path="/duties3">
-            <Duties3 nav={updateRedirect} prev={updatePrev}/>
+            <Duties3
+              nav={updateRedirect}
+              prev={updatePrev}
+              station={station}
+              uri={uri}
+            />
           </Route>
           <Route path="/delete">
-            <Delete nav={updateRedirect}/>
+            <Delete 
+              nav={updateRedirect} 
+              station={station} 
+              uri={uri} 
+            />
           </Route>
           <Route path="/duties">
-            <Duties nav={updateRedirect} prev={updatePrev}/>
+            <Duties
+              nav={updateRedirect}
+              prev={updatePrev}
+              station={station}
+              uri={uri}
+            />
           </Route>
           <Route path="/duties2">
-            <Duties2 nav={updateRedirect} prev={updatePrev}/>
+            <Duties2
+              nav={updateRedirect}
+              prev={updatePrev}
+              station={station}
+              uri={uri}
+            />
           </Route>
           <Route path="/attendence">
-            <Attendence nav={updateRedirect} prev={updatePrev}/>
+            <Attendence
+              nav={updateRedirect}
+              prev={updatePrev}
+              station={station}
+              uri={uri}
+            />
           </Route>
           <Route path="/addDuty">
-            <AddAreaDuty nav={updateRedirect} prev={updatePrev}/>
+            <AddAreaDuty
+              nav={updateRedirect}
+              prev={updatePrev}
+              station={station}
+              uri={uri}
+            />
           </Route>
-          <Route path="/assignedJobs" >
-            <AssignedJobs nav={updateRedirect} prev={updatePrev}/>
+          <Route path="/assignedJobs">
+            <AssignedJobs
+              nav={updateRedirect}
+              prev={updatePrev}
+              station={station}
+              uri={uri}
+            />
+          </Route>
+          <Route path="/UpdateList">
+            <UpdateList
+              nav={updateRedirect}
+              prev={updatePrev}
+              station={station}
+              uri={uri}
+            />
           </Route>
         </Switch>
       </main>

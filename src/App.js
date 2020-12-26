@@ -2,6 +2,7 @@ import "./App.css";
 import React from "react";
 import SideNav from "./components/sidenav";
 import Login from "./components/login";
+import { Station } from "./contextStation";
 import {
   BrowserRouter as Router,
   Switch,
@@ -12,13 +13,18 @@ import {
 
 function App() {
   var [login, setlogin] = React.useState(false);
+
+  const [station, updateStation] = React.useState("");
   return (
     <Router>
       <div className="App">
         {login ? (
-          <SideNav />
+          <SideNav station={station}/>
         ) : (
-          <Login setlogin={() => setlogin(true)} />
+          <Login
+            updateStation={(x) => updateStation(x)}
+            setlogin={() => setlogin(true)}
+          />
         )}
       </div>
     </Router>
@@ -26,3 +32,11 @@ function App() {
 }
 
 export default App;
+
+
+// {
+//   "name": "@electron-forge/maker-squirrel",
+//   "config": {
+//     "name": "police"
+//   }
+// },

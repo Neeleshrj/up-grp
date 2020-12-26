@@ -13,6 +13,7 @@ import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import Sidenav from "./sidenav";
 import ThreeSixtyIcon from "@material-ui/icons/ThreeSixty";
+import UpdateIcon from "@material-ui/icons/Update";
 //const [title, updateTitle] = useState("");
 
 export const MainListItems = (props) => {
@@ -27,6 +28,20 @@ export const MainListItems = (props) => {
         </ListItem>
       </Link>
       <Link
+        to="/UpdateList"
+        onClick={() => {
+          props.title("अपडेट");
+          props.prev("/dashboard");
+        }}
+      >
+        <ListItem button>
+          <ListItemIcon>
+            <UpdateIcon />
+          </ListItemIcon>
+          <ListItemText primary="अपडेट" />
+        </ListItem>
+      </Link>
+      <Link
         to="/addemp"
         onClick={() => {
           props.title("सिपाही जोड़ें");
@@ -37,23 +52,21 @@ export const MainListItems = (props) => {
           <ListItemIcon>
             <PeopleIcon />
           </ListItemIcon>
-          <ListItemText
-            primary="
-        सिपाही जोड़ें"
-          />
+          <ListItemText primary="सिपाही जोड़ें" />
         </ListItem>
       </Link>
-      <Link to="/addtrain" onClick={() =>{ props.title("ट्रेन जोड़ें")
-        props.prev("/dashboard");
-    }}>
+      <Link
+        to="/addtrain"
+        onClick={() => {
+          props.title("ट्रेन जोड़ें");
+          props.prev("/dashboard");
+        }}
+      >
         <ListItem button>
           <ListItemIcon>
             <TrainIcon />
           </ListItemIcon>
-          <ListItemText
-            primary="
-        ट्रेन जोड़ें"
-          />
+          <ListItemText primary="ट्रेन जोड़ें" />
         </ListItem>
       </Link>
       <Link
@@ -108,7 +121,7 @@ export const MainListItems = (props) => {
 export const secondaryListItems = (
   <div>
     <img
-      style={{ width: "65%", marginTop: "65%" }}
+      style={{ width: "65%", marginTop: "30%" }}
       alt="police"
       src={image}
     ></img>

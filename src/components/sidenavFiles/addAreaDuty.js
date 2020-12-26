@@ -1,11 +1,11 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { TextField, Button, Typography } from "@material-ui/core";
 
 function handleSubmit(e, data, setStatus) {
   e.preventDefault();
   //console.log(data);
   if (Object.keys(data).length) {
-    fetch(`https://uppolice-app.herokuapp.com/jobs/add/AreaDuty`, {
+    fetch(`http://localhost:8000/jobs/add/AreaDuty`, {
       method: "POST",
       body: JSON.stringify(data),
       headers: { "Content-Type": "application/json" },
