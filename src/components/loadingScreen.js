@@ -12,7 +12,7 @@ export default function Loading(props) {
       display="flex"
       justifyContent="center"
     >
-      <img src={image} className="animate" />
+      <img alt="police" src={image} className="animate" ></img>
       <h4>लोड हो रहा है....</h4>
     </Typography>
   );

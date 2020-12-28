@@ -268,35 +268,6 @@ export default function EnhancedTable(props) {
     updateCheck([]);
   };
 
-  // const handleSelectAllClick = (event) => {
-  //   if (event.target.checked) {
-  //     const newSelecteds = rows.map((n) => n.name);
-  //     setSelected(newSelecteds);
-  //     return;
-  //   }
-  //   setSelected([]);
-  // };
-
-  // const handleClick = (event, name) => {
-  //   const selectedIndex = selected.indexOf(name);
-  //   let newSelected = [];
-
-  //   if (selectedIndex === -1) {
-  //     newSelected = newSelected.concat(selected, name);
-  //   } else if (selectedIndex === 0) {
-  //     newSelected = newSelected.concat(selected.slice(1));
-  //   } else if (selectedIndex === selected.length - 1) {
-  //     newSelected = newSelected.concat(selected.slice(0, -1));
-  //   } else if (selectedIndex > 0) {
-  //     newSelected = newSelected.concat(
-  //       selected.slice(0, selectedIndex),
-  //       selected.slice(selectedIndex + 1)
-  //     );
-  //   }
-
-  //   setSelected(newSelected);
-  // };
-
   function loadingInterval(rows) {
     return new Promise((resolve, reject) => {
       const interval = setInterval(() => {
@@ -516,7 +487,7 @@ export default function EnhancedTable(props) {
                   </TableBody>
                 </Table>
               </TableContainer>
-              <TablePagination
+              {/* <TablePagination
                 rowsPerPageOptions={[5, 10, 25]}
                 component="div"
                 count={rows.length}
@@ -524,7 +495,7 @@ export default function EnhancedTable(props) {
                 page={page}
                 onChangePage={handleChangePage}
                 onChangeRowsPerPage={handleChangeRowsPerPage}
-              />
+              /> */}
             </Paper>
             <Button
               color="primary"

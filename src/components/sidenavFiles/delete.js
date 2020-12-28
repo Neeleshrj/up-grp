@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { TextField, Button, Typography } from "@material-ui/core";
 
-function handleSubmit(e, type, data, setStatus) {
+function handleSubmit(uri,station,e, type, data, setStatus) {
   if (Object.keys(data).length) {
-    fetch(`https://uppolice-app.herokuapp.com/jobs/delete/${type}`, {
+    fetch(uri+`/jobs/delete/${type}?station=`+station, {
       method: "DELETE",
       body: JSON.stringify(data),
       headers: { "Content-Type": "application/json" },
@@ -52,7 +52,7 @@ function RemoveEmp(props) {
           variant="contained"
           style={{ marginTop: "20px", width: "20%" }}
           color="primary"
-          onClick={(e) => handleSubmit(e, "User", { pno }, updateStatus)}
+          onClick={(e) => handleSubmit(props.uri,props.station,e, "User", { pno }, updateStatus)}
         >
           सिपाही मिटाएँ
         </Button>
@@ -73,7 +73,7 @@ function RemoveEmp(props) {
           style={{ marginTop: "20px", width: "20%" }}
           color="primary"
           onClick={(e) =>
-            handleSubmit(e, "TrainDuty", { train_no }, updateStatus)
+            handleSubmit(props.uri,props.station,e, "TrainDuty", { train_no }, updateStatus)
           }
         >
           ट्रेन मिटाएँ
@@ -95,7 +95,7 @@ function RemoveEmp(props) {
           style={{ marginTop: "20px", width: "20%" }}
           color="primary"
           onClick={(e) =>
-            handleSubmit(e, "AreaDuty", { location }, updateStatus)
+            handleSubmit(props.uri,props.station,e, "AreaDuty", { location }, updateStatus)
           }
         >
           क्षेत्रीय ड्यूटी मिटाएँ

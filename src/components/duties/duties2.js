@@ -121,7 +121,7 @@ export default function CustomizedTables2(props) {
                   <StyledTableCell align="left">
                     ड्यूटी का स्थान
                   </StyledTableCell>
-                  <StyledTableCell align="center">shift</StyledTableCell>
+                  <StyledTableCell align="center">पारी</StyledTableCell>
                   <StyledTableCell align="center">
                     लोगों की संख्या रात
                   </StyledTableCell>

@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import { TextField, Button, Typography } from "@material-ui/core";
 
 function handleSubmit(uri, station, absent, setStatus) {
-  if (absent.lenght) {
+  if (absent.length) {
+    console.log(absent)
     fetch(uri + `/jobs/update/assignment?station=` + station, {
       method: "POST",
       body: JSON.stringify({ absent }),

@@ -1,11 +1,11 @@
 import React, { useState,useEffect } from "react";
 import { TextField, Button, Typography } from "@material-ui/core";
 
-function handleSubmit(e, data, setStatus) {
+function handleSubmit(uri,station,e, data, setStatus) {
   e.preventDefault();
   //console.log(data);
   if (Object.keys(data).length) {
-    fetch(`https://uppolice-app.herokuapp.com/users/add`, {
+    fetch(uri+`/users/add?station=`+station, {
       method: "POST",
       body: JSON.stringify(data),
       headers: { "Content-Type": "application/json" },
@@ -44,7 +44,7 @@ function AddEmp(props) {
         noValidate
         autoComplete="off"
         onSubmit={(e) =>
-          handleSubmit(
+          handleSubmit(props.uri,props.station,
             e,
             { name, designation, pno, contact, remark },
             updateStatus

@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { TextField, Button, Typography } from "@material-ui/core";
 
-function handleSubmit(e, data, setStatus) {
+function handleSubmit(uri,station,e, data, setStatus) {
   e.preventDefault();
   //console.log(data);
   if (Object.keys(data).length) {
-    fetch(`http://localhost:8000/jobs/add/AreaDuty`, {
+    fetch(uri+`/jobs/add/AreaDuty?station=`+station, {
       method: "POST",
       body: JSON.stringify(data),
       headers: { "Content-Type": "application/json" },
@@ -40,7 +40,7 @@ function AddDuty(props) {
         style={{ marginTop: "15%" }}
         noValidate
         autoComplete="off"
-        onSubmit={(e) => handleSubmit(e, { location }, updateStatus)}
+        onSubmit={(e) => handleSubmit(props.uri,props.station,e, { location }, updateStatus)}
       >
         <TextField
           id="standard-basic"

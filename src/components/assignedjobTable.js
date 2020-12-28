@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import "./assignedJobs.css";
+import { Button } from "@material-ui/core";
 
 const useStyles = makeStyles({
   tableFirst: {
@@ -23,11 +24,11 @@ const useStyles = makeStyles({
   },
 });
 
-function TrainTable() {
+function TrainTable({uri,station}) {
   const classes = useStyles();
   const [trains, updateTrains] = useState([]);
   useEffect(() => {
-    fetch(`http://localhost:8000/jobs/assigned/TrainDuty`)
+    fetch(uri+`/jobs/assigned/TrainDuty?station=`+station)
       .then((res) => res.json())
       .then((data) => {
         if (data.status == "success") {
@@ -77,13 +78,13 @@ function TrainTable() {
   );
 }
 
-function PlatformTable() {
+function PlatformTable({uri,station}) {
   const classes = useStyles();
 
   const [platformsDay, updatePlatformsDay] = useState([]);
   const [platformsNight, updatePlatformsNight] = useState([]);
   useEffect(() => {
-    fetch(`http://localhost:8000/jobs/assigned/PlatformDuty`)
+    fetch(uri+`/jobs/assigned/PlatformDuty?station=`+station)
       .then((res) => res.json())
       .then((data) => {
         if (data.status == "success") {
@@ -95,7 +96,7 @@ function PlatformTable() {
   return (
     <div>
       <div id="table-first">
-        <h5 align="left">Day प्लेटफॉर्म ड्यूटी जी.आर.पी. प्रयागराज</h5>
+        <h5 align="left">दैनिक प्लेटफॉर्म ड्यूटी जी.आर.पी. प्रयागराज</h5>
         <table border={1} className={classes.table}>
           <thead className={classes.th}>
             <tr>
@@ -163,14 +164,14 @@ function PlatformTable() {
   );
 }
 
-function AreaTable() {
+function AreaTable({uri,station}) {
   const classes = useStyles();
 
   const [areas, updateAreas] = useState([]);
   const [areasDay, updateAreasDay] = useState([]);
   const [areasNight, updateAreasNight] = useState([]);
   useEffect(() => {
-    fetch(`http://localhost:8000/jobs/assigned/AreaDuty`)
+    fetch(uri+`/jobs/assigned/AreaDuty?station=`+station)
       .then((res) => res.json())
       .then((data) => {
         if (data.status == "success") {
@@ -183,7 +184,7 @@ function AreaTable() {
   return (
     <div>
       <div id="table-first">
-        <h5 align="left"> Day क्षेत्र चार्ट थाना जी.आर.पी. प्रयागराज</h5>
+        <h5 align="left">दैनिक क्षेत्र चार्ट थाना जी.आर.पी. प्रयागराज</h5>
         <table border={1} className={classes.table}>
           <thead className={classes.th}>
             <tr>
@@ -216,7 +217,7 @@ function AreaTable() {
       </div>
 
       <div id="table-first">
-        <h5 align="left">Night क्षेत्र चार्ट थाना जी.आर.पी. प्रयागराज</h5>
+        <h5 align="left">नाइट क्षेत्र चार्ट थाना जी.आर.पी. प्रयागराज</h5>
         <table border={1} className={classes.table}>
           <thead className={classes.th}>
             <tr>
@@ -273,8 +274,8 @@ function download(filename, text) {
   link.click();
   document.body.removeChild(link);
 }
-function handleClick(updateStatus) {
-  fetch(`http://localhost:8000/jobs/generate/pdf`)
+function handleClick(uri,station,updateStatus) {
+  fetch(uri+`/jobs/generate/pdf?station=`+station)
     .then((res) => res.arrayBuffer())
     .then((doc) => {
       download(`7Day_${new Date().toLocaleDateString()}.pdf`, doc);
@@ -296,16 +297,19 @@ function AssignedjobTable(props) {
 
   return (
     <>
-      <TrainTable />
-      <PlatformTable />
-      <AreaTable />
+      <TrainTable uri={props.uri} station={props.uri} />
+      <PlatformTable uri={props.uri} station={props.uri}/>
+      <AreaTable uri={props.uri} station={props.uri}/>
       {status ? <span>{status}</span> : ""}
-      <button
+      <Button
         style={{ margin: "4%", padding: "2%" }}
-        onClick={() => handleClick(updateStatus)}
+        size="large"
+        variant="contained"
+        color="priamry"
+        onClick={() => handleClick(props.uri,props.station,updateStatus)}
       >
         Generate PDF
-      </button>
+      </Button>
     </>
   );
 }

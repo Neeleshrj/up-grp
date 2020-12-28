@@ -1,11 +1,11 @@
 import React, { useState,useEffect } from "react";
 import { TextField, Button, Typography } from "@material-ui/core";
 
-function handleSubmit(e, data, setStatus) {
+function handleSubmit(uri,station,e, data, setStatus) {
   e.preventDefault();
   //console.log(data);
   if (data) {
-    fetch(`https://uppolice-app.herokuapp.com/jobs/add/TrainDuty`, {
+    fetch(uri+`/jobs/add/TrainDuty?station=`+station, {
       method: "POST",
       body: JSON.stringify(data),
       headers: { "Content-Type": "application/json" },
@@ -45,7 +45,7 @@ function AddTrain(props) {
         noValidate
         autoComplete="off"
         onSubmit={(e) =>
-          handleSubmit(
+          handleSubmit(props.uri,props.station,
             e,
             {
               train_name,
@@ -160,7 +160,6 @@ function AddTrain(props) {
           style={{
             padding: "8px",
             backgroundColor: "#43A047",
-
             width: "120px",
             color: "white",
             borderRadius: "3px",

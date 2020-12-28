@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Card from "./card";
+import { Button } from "@material-ui/core";
 
 function download(filename, text) {
   // Set up the link
@@ -46,7 +47,13 @@ function Dashboard(props) {
       <div style={{ marginTop: "10%" }}>
         
         {status ? <span>{status}</span> : ""}
-        <button onClick={() => handleClick(updateStatus,props.uri,props.station)}>Print Pdf</button>
+        <Button
+          color="primary"
+          size="large"
+          variant="contained"
+          style={{ marginTop: "20px" }} 
+          onClick={() => handleClick(updateStatus,props.uri,props.station)}
+        >Print Daily Pdf</Button>
       </div>
     </>
   );
