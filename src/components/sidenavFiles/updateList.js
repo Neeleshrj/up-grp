@@ -62,6 +62,7 @@ function RemoveEmp(props) {
           पी.एन.ओ. जोड़
         </Button>
         <br />
+        <Typography>
         {absent.length ? (
           <ul>
             {absent.map((x) => (
@@ -71,6 +72,7 @@ function RemoveEmp(props) {
         ) : (
           ""
         )}
+        </Typography>
         <Button
           size="large"
           variant="contained"

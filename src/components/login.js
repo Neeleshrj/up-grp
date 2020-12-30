@@ -22,7 +22,7 @@ function Login(props) {
           label="Station"
           onChange={(x) => {
             console.log(x.target.value);
-
+            
             updateInput(x.target.value);
           }}
           inputProps={{
@@ -42,6 +42,8 @@ function Login(props) {
           style={{ marginTop: "6vh", width: "20%" }}
           color="primary"
           onClick={() => {
+            window.localStorage.setItem('login','true')
+            window.localStorage.setItem('station','sangam')
             return input ? (setlogin(),
             updateStation(input)):""
           }}

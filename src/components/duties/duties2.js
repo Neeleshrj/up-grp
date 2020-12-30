@@ -63,7 +63,7 @@ function setStatusInterval(msg, updateStatus) {
     }, 5000);
     return msg;
   } else {
-    return <Redirect to="/duties3" />;
+    return <Redirect to="/duty/train" />;
   }
 }
 

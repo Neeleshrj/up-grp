@@ -252,7 +252,7 @@ export default function EnhancedTable(props) {
       });
     updateLoading(true);
     props.nav(false);
-    props.prev("/duties2");
+    props.prev("/duty/area");
   }, []);
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -509,7 +509,7 @@ export default function EnhancedTable(props) {
 
             {click ? <p>loading...</p> : ""}
             {status ? (
-              <Redirect to="/assignedJobs" />
+              <Redirect to="/duty/assigned" />
             ) : error ? (
               <p>{error}</p>
             ) : (

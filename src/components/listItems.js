@@ -14,6 +14,8 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Sidenav from "./sidenav";
 import ThreeSixtyIcon from "@material-ui/icons/ThreeSixty";
 import UpdateIcon from "@material-ui/icons/Update";
+import TransferWithinAStationIcon from '@material-ui/icons/TransferWithinAStation';
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 //const [title, updateTitle] = useState("");
 
 export const MainListItems = (props) => {
@@ -28,9 +30,9 @@ export const MainListItems = (props) => {
         </ListItem>
       </Link>
       <Link
-        to="/UpdateList"
+        to="/duty/assigned/update"
         onClick={() => {
-          props.title("अपडेट");
+          props.title("सूची अपडेट");
           props.prev("/dashboard");
         }}
       >
@@ -42,7 +44,7 @@ export const MainListItems = (props) => {
         </ListItem>
       </Link>
       <Link
-        to="/addemp"
+        to="/user/add"
         onClick={() => {
           props.title("सिपाही जोड़ें");
           props.prev("/dashboard");
@@ -56,7 +58,7 @@ export const MainListItems = (props) => {
         </ListItem>
       </Link>
       <Link
-        to="/addtrain"
+        to="/duty/train/add"
         onClick={() => {
           props.title("ट्रेन जोड़ें");
           props.prev("/dashboard");
@@ -70,7 +72,7 @@ export const MainListItems = (props) => {
         </ListItem>
       </Link>
       <Link
-        to="/addDuty"
+        to="/duty/add"
         onClick={() => {
           props.title("क्षेत्रीय ड्यूटी");
           props.prev("/dashboard");
@@ -84,7 +86,7 @@ export const MainListItems = (props) => {
         </ListItem>
       </Link>
       <Link
-        to="/delete"
+        to="/duty/delete"
         onClick={() => {
           props.title("मिटाएँ");
           props.prev("/dashboard");
@@ -97,8 +99,19 @@ export const MainListItems = (props) => {
           <ListItemText primary="मिटाएँ" />
         </ListItem>
       </Link>
+      <Link to="/duty/platform/add" onClick={() => {
+        props.title("प्लेटफ़ॉर्म जोड़ें");
+        props.prev("/dashboard");
+      }}>
+        <ListItem button>
+          <ListItemIcon>
+            <TransferWithinAStationIcon />
+          </ListItemIcon>
+          <ListItemText primary="प्लेटफ़ॉर्म जोड़ें" />
+        </ListItem>
+      </Link>
       <Link
-        to="/attendence"
+        to="/user/attendence"
         onClick={() => {
           props.title("सूची बनाएं");
           props.prev("/dashboard");
@@ -111,6 +124,22 @@ export const MainListItems = (props) => {
           <ListItemText
             primary="
         सूची बनाएं"
+          />
+        </ListItem>
+      </Link>
+
+      <Link
+        to="/user/attendance/update"
+        onClick={() => {
+          props.title("अपडेट उपस्थिति");
+        }}
+      >
+        <ListItem button>
+          <ListItemIcon>
+            <CheckCircleIcon />
+          </ListItemIcon>
+          <ListItemText
+            primary="अपडेट उपस्थिति"
           />
         </ListItem>
       </Link>

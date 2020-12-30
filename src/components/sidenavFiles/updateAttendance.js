@@ -31,7 +31,7 @@ const columns = [
 // }
 
 async function getData(uri,station,updateRows, updateLoading) {
-  fetch(uri+`/users?station=`+station)
+  fetch(uri+`/users?availability=unavailable&station=`+station)
     .then((res) => res.json())
     .then((doc) => {
       //console.log(doc);
@@ -52,7 +52,7 @@ async function getData(uri,station,updateRows, updateLoading) {
 
 async function updateAttendance(uri,station,data, updateStatus) {
   //console.log(data);
-  fetch(uri+`/users/attendance?station=`+station, {
+  fetch(uri+`/users/attendance/update?station=`+station, {
     method: "POST",
     body: JSON.stringify(data),
     headers: { "Content-Type": "application/json" },
@@ -85,17 +85,14 @@ function setLoadingInterval(updateLoading, rows) {
 }
 
 function setStatusInterval(msg, updateStatus) {
-  if (msg == "error") {
     setTimeout(() => {
       updateStatus("");
-    }, 5000);
+      window.location.reload();
+    }, 3000);
     return msg;
-  } else {
-    return <Redirect to="/duty/platform" />;
-  }
 }
 
-export default function Attendence(props) {
+export default function AttendenceUpdate(props) {
   const [status, updateStatus] = useState("");
   const [rows, updateRows] = useState([
     {
@@ -150,7 +147,7 @@ export default function Attendence(props) {
                 )
               }
             >
-              आगे बढ़ें
+              अपडेट करें
             </Button>
             {status.length ? (
               <Typography

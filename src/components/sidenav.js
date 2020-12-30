@@ -30,6 +30,8 @@ import Delete from "./sidenavFiles/delete";
 import AddAreaDuty from "./sidenavFiles/addAreaDuty";
 import AssignedJobs from "./assignedjobTable";
 import DashboardPage from "./sidenavFiles/dashboard";
+import AddPlatform from "./sidenavFiles/addPlatform"
+import AttendanceUpdate from "./sidenavFiles/updateAttendance";
 import ArrowBack from "@material-ui/icons/ArrowBack";
 import { Station } from "../contextStation";
 import UpdateList from "./sidenavFiles/updateList";
@@ -121,7 +123,7 @@ export default function Dashboard(props) {
   const classes = useStyles();
   const [open, setOpen] = React.useState(true);
   const { station } = props;
-  const uri = "https://uppolice-app.herokuapp.com";
+  const uri = "http://localhost:8000";
   const navigate = () => {
     return <Redirect to={prevPage} />;
   };
@@ -195,16 +197,16 @@ export default function Dashboard(props) {
       </Drawer>
       <main className={classes.content}>
         <Switch>
-          <Route path="/dashboard">
+          <Route exact path="/dashboard">
             <DashboardPage nav={updateRedirect} station={station} uri={uri} />
           </Route>
-          <Route path="/addemp">
+          <Route exact path="/user/add">
             <AddEmp nav={updateRedirect} station={station} uri={uri} />
           </Route>
-          <Route path="/addtrain">
+          <Route exact path="/duty/train/add">
             <AddTrain nav={updateRedirect} station={station} uri={uri} />
           </Route>
-          <Route path="/duties3">
+          <Route exact path="/duty/train">
             <Duties3
               nav={updateRedirect}
               prev={updatePrev}
@@ -212,14 +214,14 @@ export default function Dashboard(props) {
               uri={uri}
             />
           </Route>
-          <Route path="/delete">
+          <Route exact path="/duty/delete">
             <Delete 
               nav={updateRedirect} 
               station={station} 
               uri={uri} 
             />
           </Route>
-          <Route path="/duties">
+          <Route exact path="/duty/platform">
             <Duties
               nav={updateRedirect}
               prev={updatePrev}
@@ -227,7 +229,7 @@ export default function Dashboard(props) {
               uri={uri}
             />
           </Route>
-          <Route path="/duties2">
+          <Route exact path="/duty/area">
             <Duties2
               nav={updateRedirect}
               prev={updatePrev}
@@ -235,7 +237,7 @@ export default function Dashboard(props) {
               uri={uri}
             />
           </Route>
-          <Route path="/attendence">
+          <Route exact path="/user/attendence">
             <Attendence
               nav={updateRedirect}
               prev={updatePrev}
@@ -243,7 +245,7 @@ export default function Dashboard(props) {
               uri={uri}
             />
           </Route>
-          <Route path="/addDuty">
+          <Route exact path="/duty/add">
             <AddAreaDuty
               nav={updateRedirect}
               prev={updatePrev}
@@ -251,7 +253,7 @@ export default function Dashboard(props) {
               uri={uri}
             />
           </Route>
-          <Route path="/assignedJobs">
+          <Route exact path="/duty/assigned">
             <AssignedJobs
               nav={updateRedirect}
               prev={updatePrev}
@@ -259,8 +261,23 @@ export default function Dashboard(props) {
               uri={uri}
             />
           </Route>
-          <Route path="/UpdateList">
+          <Route exact path="/duty/platform/add">
+            <AddPlatform 
+            nav={updateRedirect}
+              prev={updatePrev}
+              station={station}
+              uri={uri} />
+          </Route>
+          <Route exact path="/duty/assigned/update">
             <UpdateList
+              nav={updateRedirect}
+              prev={updatePrev}
+              station={station}
+              uri={uri}
+            />
+          </Route>
+          <Route exact path="/user/attendance/update">
+            <AttendanceUpdate
               nav={updateRedirect}
               prev={updatePrev}
               station={station}

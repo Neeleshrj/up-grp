@@ -32,6 +32,7 @@ function RemoveEmp(props) {
   const [pno, updatePno] = useState("");
   const [train_no, updateTrain] = useState("");
   const [location, updateArea] = useState("");
+  const [platform_no, updatePlatform] = useState("");
   const [status, updateStatus] = useState("");
   return (
     <div style={{ marginTop: "10%", width: "100%" }}>
@@ -99,6 +100,28 @@ function RemoveEmp(props) {
           }
         >
           क्षेत्रीय ड्यूटी मिटाएँ
+        </Button>
+        <br></br>
+        <br></br>
+        <TextField
+          id="standard-basic"
+          style={{ marginTop: "20px", width: "30%" }}
+          label="प्लेटफ़ॉर्म संख्या"
+          variant="outlined"
+          onChange={(e) => updatePlatform(e.target.value)}
+        />
+        <br></br>
+        <Button
+          type="submit"
+          size="large"
+          variant="contained"
+          style={{ marginTop: "20px", width: "20%" }}
+          color="primary"
+          onClick={(e) =>
+            handleSubmit(props.uri,props.station,e, "PlatformDuty", { platform_no }, updateStatus)
+          }
+        >
+          प्लेटफ़ॉर्म संख्या
         </Button>
         <br></br>
         {status.length ? (
