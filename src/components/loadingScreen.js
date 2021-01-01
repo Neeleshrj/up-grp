@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import image from "../img/Upplogo.png";
+import image from "./Upplogo.png";
 import Typography from "@material-ui/core/Typography";
 import "./loading.css";
 export default function Loading(props) {

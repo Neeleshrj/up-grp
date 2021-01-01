@@ -104,7 +104,7 @@ export default function CustomizedTables2(props) {
       });
     updateLoading(true);
     props.nav(false);
-    props.prev("/duties");
+    props.prev("/duty/platform");
   }, []);
 
   return (

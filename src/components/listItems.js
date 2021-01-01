@@ -150,7 +150,7 @@ export const MainListItems = (props) => {
 export const secondaryListItems = (
   <div>
     <img
-      style={{ width: "65%", marginTop: "30%" }}
+      style={{ width: "65%", marginTop: "20%" }}
       alt="police"
       src={image}
     ></img>

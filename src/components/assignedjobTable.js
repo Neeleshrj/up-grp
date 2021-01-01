@@ -292,7 +292,7 @@ function AssignedjobTable(props) {
   const [status, updateStatus] = useState("");
   useEffect(() => {
     props.nav(false);
-    props.prev("/duties3");
+    props.prev("/duty/train");
   }, []);
 
   return (

@@ -123,7 +123,7 @@ export default function Dashboard(props) {
   const classes = useStyles();
   const [open, setOpen] = React.useState(true);
   const { station } = props;
-  const uri = "http://localhost:8000";
+  const uri = "https://uppolice-app.herokuapp.com";
   const navigate = () => {
     return <Redirect to={prevPage} />;
   };

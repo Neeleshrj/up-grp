@@ -3,49 +3,30 @@ import { DataGrid } from "@material-ui/data-grid";
 import { Button, Link, Typography } from "@material-ui/core";
 import { Redirect } from "react-router-dom";
 import Loading from "../loadingScreen";
+import SearchBar from "../searchBar";
 
-const columns = [
-  { field: "id", headerName: "क्र.सं.", width: 70 },
-  { field: "name", headerName: "नाम अधि0/ कर्म0गण", width: 200 },
-  { field: "designation", headerName: "पद", width: 130 },
-  {
-    field: "pno",
-    headerName: "पीएनओ",
-    width: 160,
-  },
-  {
-    field: "contact",
-    headerName: "मोबइल नं0",
-    sortable: false,
-    width: 160,
-  },
-  {
-    field: "remark",
-    headerName: "अन्य विवरण",
-    sortable: false,
-    width: 160,
-  },
-];
+
+
 // for (var i = 0; i < columns.length; i++) {
 //   columns[i].headerName.style.fontWeight = "900";
 // }
 
-async function getData(uri,station,updateRows, updateLoading) {
+async function getData(uri,station,updateRows, updateLoading, updateFilterData) {
   fetch(uri+`/users?station=`+station)
     .then((res) => res.json())
     .then((doc) => {
       //console.log(doc);
-      updateRows(
-        doc.data.map((x, i) => ({
-          id: i + 1,
-          designation: x.designation,
-          name: x.name,
-          pno: x.pno,
-          contact: x.contact,
-          remark: x.remark,
-          availability: x.availability,
-        }))
-      );
+      const data = doc.data.map((x, i) => ({
+        id: i + 1,
+        designation: x.designation,
+        name: x.name,
+        pno: x.pno,
+        contact: x.contact,
+        remark: x.remark,
+        availability: x.availability,
+      }))
+      updateRows(data);
+      updateFilterData(data);
     });
   return updateLoading(true);
 }
@@ -96,6 +77,32 @@ function setStatusInterval(msg, updateStatus) {
 }
 
 export default function Attendence(props) {
+
+  
+  const columns = [
+    { field: "id", headerName: "क्र.सं.", width: 70 },
+    { field: "name", headerName: "नाम अधि0/ कर्म0गण", width: 200 },
+    { field: "designation", headerName: "पद", width: 130 },
+    {
+      field: "pno",
+      headerName: "पीएनओ",
+      width: 160,
+    },
+    {
+      field: "contact",
+      headerName: "मोबइल नं0",
+      sortable: false,
+      width: 160,
+    },
+    {
+      field: "remark",
+      headerName: "अन्य विवरण",
+      sortable: false,
+      width: 160,
+    },
+  ];
+
+
   const [status, updateStatus] = useState("");
   const [rows, updateRows] = useState([
     {
@@ -108,16 +115,27 @@ export default function Attendence(props) {
       availability: "",
     },
   ]);
+  const [filterData,updateFilterData] = useState([])
   const [loading, updateLoading] = useState(false);
   const [selected, updateSelected] = useState([]);
   useEffect(() => {
     console.log(props.uri)
     console.log(props.station)
-    getData(props.uri,props.station,updateRows, updateLoading);
+    getData(props.uri,props.station,updateRows, updateLoading, updateFilterData);
     props.nav(false);
     props.prev("/dashboard");
     
   }, []);
+
+
+  function updateSelection(row){
+    //console.log(row)
+    const select = new Set(selected)
+    if(row.isSelected==true) select.add(row.data.id)
+    else select.delete(row.data.id)
+    console.log(select)
+    return updateSelected([...select])
+  }
 
   return (
     <>
@@ -125,23 +143,29 @@ export default function Attendence(props) {
         setLoadingInterval(updateLoading, rows)
       ) : (
         <>
+        {/* <div style={{ height: "75%", width: "100%", marginTop: "6%" }}>
+          <SearchBar rows={rows} updateRows={updateFilterData}/>
+          </div> */}
           <div style={{ height: "80%", width: "100%", marginTop: "6%" }}>
+          <SearchBar rows={rows} updateRows={updateFilterData}/>
             <DataGrid
-              rows={rows}
+              rows={filterData}
+              disableSelectionOnClick="true"
               columns={columns}
               pageSize={10}
               checkboxSelection
               checked="true"
+              selection={selected}
               onSelectionChange={(x) => updateSelected(x.rowIds)}
               autoPageSize="True"
             />
           </div>
-          <div style={{ marginRight: "100px" }}>
+          <div style={{marginTop: "5%"}}>
             <Button
               color="primary"
               size="large"
               variant="contained"
-              style={{ marginTop: "20px" }}
+              style={{ marginTop: "2%",marginBottom: "2%" }}
               onClick={() =>
                 updateAttendance(
                   props.uri,props.station,

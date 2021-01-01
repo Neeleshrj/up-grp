@@ -12,9 +12,11 @@ import {
 } from "react-router-dom";
 
 function App() {
-  const initialLogin = window.localStorage.getItem('login')?window.localStorage.getItem('login'):""
-  const initialStation = window.localStorage.getItem('station')?window.localStorage.getItem('station'):""
+  // const initialLogin = window.localStorage.getItem('login')?window.localStorage.getItem('login'):""
+  // const initialStation = window.localStorage.getItem('station')?window.localStorage.getItem('station'):""
   
+  const initialLogin = ""
+  const initialStation = ""
   const [login, setlogin] = React.useState(initialLogin);
   const [station, updateStation] = React.useState(initialStation);
   return (

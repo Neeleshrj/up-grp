@@ -40,11 +40,11 @@ function download(filename, text) {
   link.click();
   document.body.removeChild(link);
 }
-function handleClick(updateStatus,uri,station) {
-  fetch(uri+`/jobs/generate/finalPdf?station=`+station)
+function handleClick(updateStatus,uri,station,type) {
+  fetch(uri+`/jobs/generate/finalPdf?type=${type}&&station=`+station)
     .then((res) => res.arrayBuffer())
     .then((doc) => {
-      download(`Daily_${(new Date()).toLocaleDateString()}.pdf`, doc);
+      download(`${type}_${(new Date()).toLocaleDateString()}.pdf`, doc);
       updateStatus("")
       
     });
@@ -54,7 +54,7 @@ function handleClickSeven(updateStatus,uri,station) {
   fetch(uri+`/jobs/generate/pdf?station=`+station)
     .then((res) => res.arrayBuffer())
     .then((doc) => {
-      download(`Daily_${(new Date()).toLocaleDateString()}.pdf`, doc);
+      download(`7Days_${(new Date()).toLocaleDateString()}.pdf`, doc);
       updateStatus("")
       
     });
@@ -88,7 +88,7 @@ function Dashboard(props) {
             size="large"
             variant="contained"
             style={{ marginTop: "20px" }} 
-            onClick={() => handleClick(updateStatus,props.uri,props.station)}
+            onClick={() => handleClick(updateStatus,props.uri,props.station,"Day")}
           >प्रिंट</Button>
         </CardActions>
       </Card>
@@ -125,7 +125,7 @@ function Dashboard(props) {
             size="large"
             variant="contained"
             style={{ marginTop: "20px" }} 
-            onClick={() => handleClick(updateStatus,props.uri,props.station)}
+            onClick={() => handleClick(updateStatus,props.uri,props.station,"Night")}
           >प्रिंट</Button>
         </CardActions>
       </Card>

@@ -105,7 +105,7 @@ export default function CustomizedTables(props) {
       });
     updateLoading(true);
     props.nav(false);
-    props.prev("/attendence");
+    props.prev("/user/attendence");
   }, []);
   return (
     <>

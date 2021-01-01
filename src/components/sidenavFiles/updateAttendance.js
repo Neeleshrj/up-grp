@@ -87,7 +87,8 @@ function setLoadingInterval(updateLoading, rows) {
 function setStatusInterval(msg, updateStatus) {
     setTimeout(() => {
       updateStatus("");
-      window.location.reload();
+      // window.location.reload();
+      return <Redirect to="/user/attendance/update" />
     }, 3000);
     return msg;
 }
